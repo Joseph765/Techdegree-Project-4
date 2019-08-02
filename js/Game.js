@@ -14,6 +14,7 @@
        {phrase: 'chinese buffet'}
      ];
      this.activePhrase = null;
+     this.phraseClass = null;
    }
 
 
@@ -32,8 +33,8 @@
      let phrase = this.getRandomPhrase();
      this.activePhrase = phrase;
 
-     const phraseObject = new Phrase(phrase);
-     phraseObject.addPhraseToDisplay(phrase);
+     this.phraseClass = new Phrase(phrase);
+     this.phraseClass.addPhraseToDisplay(phrase);
    }
 
    handleInteraction(keyPressed) {
@@ -42,26 +43,70 @@
        keyPressed.style.opacity = 0.5;
 
        const letters = document.querySelectorAll('div#phrase li');
-
+       let counter = 0;
        for ( let i = 0; i < letters.length; i += 1 ) {
          if (letters[i].textContent === keyPressed.textContent) {
            keyPressed.className = 'chosen';
-           const phraseObject = new Phrase(phrase);
-           phraseObject.showMatchedLetter();
-           let win = checkForWin();
-           if (win === true) {
-             gameOver();
-           }
+           this.phraseClass.showMatchedLetter(keyPressed, letters[i]);
          } else {
-           keyPressed.className = 'wrong';
-           removeLife();
+           counter += 1;
          }
        }
+       if (counter === letters.length) {
+         keyPressed.classList.add('wrong');
+         this.removeLife();
+         this.missed += 1;
+       }
+       if (this.checkForWin() === true) {
+         this.gameOver(true, false);
+       }
+       if (this.missed === 5) {
+         this.gameOver(false, true)
+       }
+      }
 
+     }
+
+   removeLife() {
+     let lifeImage = document.querySelectorAll('div#scoreboard img[src="images/liveHeart.png"]');
+     const lifeImageArray = Array.prototype.slice.call(lifeImage);
+     if (lifeImage) {
+       lifeImageArray[0].setAttribute('src', 'images/lostHeart.png');
      }
    }
 
-   removeLife() {
+   checkForWin() {
+     const lifeImage = document.querySelectorAll('div#scoreboard img[src="images/liveHeart.png"]');
+     const phraseList = document.querySelectorAll('div#phrase li');
+     const phraseListArray = Array.prototype.slice.call(phraseList); //https://gomakethings.com/converting-a-nodelist-to-an-array-with-vanilla-javascript/
+     const newPhraseList = phraseListArray.filter( li => li.textContent !== ' ');
+     let letterCounter = 0;
+
+     for (let i = 0; i < newPhraseList.length; i += 1) {
+       if (newPhraseList[i].classList.contains('show')) {
+         letterCounter += 1;
+       }
+     }
+
+     if (letterCounter === newPhraseList.length) {
+       return true;
+     } else {
+       return false;
+     }
+
+   }
+
+   gameOver(gameWin, gameLose) {
+
+     if (gameWin === true) {
+       alert('you won!');
+     }
+
+     if (gameLose === true) {
+       alert('you lose!')
+     }
+
+
 
    }
 

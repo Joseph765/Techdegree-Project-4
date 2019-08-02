@@ -58,17 +58,10 @@
        }
      }
 
-    showMatchedLetter(keyPressed) {
+    showMatchedLetter(keyPressed, hiddenLetter) {
       const liPhrase = document.querySelectorAll('div#phrase li');
-        for (let i = 0; i < liPhrase; i += 1) {
-          if (keyPressed === liPhrase[i].textContent) {
-            liPhrase[i].classList.remove('hide');
-            liPhrase[i].classList.add('show');
-          } else {
-            liPhrase[i].classList.remove('show');
-            liPhrase[i].classList.add('hide');
-          }
-      }
+      hiddenLetter.classList.remove('hide');
+      hiddenLetter.classList.add('show');
     }
 
 
