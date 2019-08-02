@@ -11,6 +11,8 @@ startButton.addEventListener('click', () => {
 
   const keyButtons = document.querySelector('div#qwerty');
     keyButtons.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') {
         game.handleInteraction(e.target);
+      }
     });
   });

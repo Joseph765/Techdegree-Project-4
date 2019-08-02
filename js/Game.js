@@ -15,6 +15,10 @@
      ];
      this.activePhrase = null;
      this.phraseClass = null;
+     this.qwertyDiv = document.querySelector('div#qwerty');
+     this.overlayDiv = document.querySelector('div#overlay');
+     this.phraseDiv = document.querySelector('div#phrase');
+     this.scoreboardDiv = document.querySelector('div#scoreboard');
    }
 
 
@@ -24,11 +28,13 @@
    }
 
    startGame() {
-     //displays startGame screen
-     const screenOverlay = document.querySelector('div#overlay');
-     screenOverlay.removeAttribute('id');
-     const startGameScreen = document.querySelector('div.start');
-     startGameScreen.style.display = 'none';
+
+     this.resetGame();
+
+     this.qwertyDiv.style.display = 'block';
+     this.overlayDiv.style.display = 'none';
+     this.phraseDiv.style.display = 'block';
+     this.scoreboardDiv.style.display = 'block';
 
      let phrase = this.getRandomPhrase();
      this.activePhrase = phrase;
@@ -68,7 +74,7 @@
      }
 
    removeLife() {
-     let lifeImage = document.querySelectorAll('div#scoreboard img[src="images/liveHeart.png"]');
+     const lifeImage = document.querySelectorAll('li.tries img[src="images/liveHeart.png"]');
      const lifeImageArray = Array.prototype.slice.call(lifeImage);
      if (lifeImage) {
        lifeImageArray[0].setAttribute('src', 'images/lostHeart.png');
@@ -76,7 +82,6 @@
    }
 
    checkForWin() {
-     const lifeImage = document.querySelectorAll('div#scoreboard img[src="images/liveHeart.png"]');
      const phraseList = document.querySelectorAll('div#phrase li');
      const phraseListArray = Array.prototype.slice.call(phraseList); //https://gomakethings.com/converting-a-nodelist-to-an-array-with-vanilla-javascript/
      const newPhraseList = phraseListArray.filter( li => li.textContent !== ' ');
@@ -98,15 +103,51 @@
 
    gameOver(gameWin, gameLose) {
 
+     const h1 = document.querySelector('div#overlay h1');
+
+     this.qwertyDiv.style.display = 'none';
+     this.overlayDiv.style.display = 'flex';
+     this.phraseDiv.style.display = 'none';
+     this.scoreboardDiv.style.display = 'none';
+
      if (gameWin === true) {
-       alert('you won!');
+       h1.textContent = 'You won! Play again!';
+       this.overlayDiv.className = 'win';
      }
 
      if (gameLose === true) {
-       alert('you lose!')
+       h1.textContent = 'You lost. Play again.';
+       this.overlayDiv.className = 'lose';
      }
 
 
+
+   }
+
+   resetGame() {
+
+     //resetting life images
+     const lifeImage = document.querySelectorAll('li.tries img');
+     const lifeImageArray = Array.prototype.slice.call(lifeImage);
+
+     for (let i = 0; i < lifeImageArray.length; i += 1) {
+       lifeImageArray[i].setAttribute('src', 'images/liveHeart.png');
+     }
+
+     //resetting keyboard keyboard buttons
+     const keyboardButtons = document.querySelectorAll('div#qwerty button');
+     const keyboardButtonsArray = Array.prototype.slice.call(keyboardButtons);
+
+     for (let i = 0; i < keyboardButtonsArray.length; i += 1) {
+       keyboardButtonsArray[i].className = 'key';
+       keyboardButtonsArray[i].style.opacity = 1.0;
+       keyboardButtonsArray[i].disabled = false;
+     }
+
+     //resetting phrase
+     this.activePhrase = null;
+     this.phraseClass = null;
+     this.phraseDiv.innerHTML = '<ul></ul>';
 
    }
 
