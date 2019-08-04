@@ -148,7 +148,8 @@
      this.activePhrase = null;
      this.phraseClass = null;
      this.phraseDiv.innerHTML = '<ul></ul>';
-
+     this.missed = 0;
+     this.overlayDiv.className = '';
    }
 
  }

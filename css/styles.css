@@ -107,7 +107,13 @@ button {
   width: 15px;
 }
 
+::selection {
+  background-color: #3297FD;
+}
 
+.letter::selection {
+  color: transparent;
+}
 
 .show {
   color: #fff;
