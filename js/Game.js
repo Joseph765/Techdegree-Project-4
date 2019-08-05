@@ -31,6 +31,12 @@
 
      this.resetGame();
 
+     // undisables keyboardButtons
+     for (let i = 0; i < this.qwertyDiv.length; i += 1) {
+       this.qwertyDiv[i].disabled = false;
+     }
+
+
      this.qwertyDiv.style.display = 'block';
      this.overlayDiv.style.display = 'none';
      this.phraseDiv.style.display = 'block';
@@ -110,6 +116,14 @@
      this.phraseDiv.style.display = 'none';
      this.scoreboardDiv.style.display = 'none';
 
+     //diabling keyboard keyboard buttons
+     const keyboardButtons = document.querySelectorAll('div#qwerty button');
+     const keyboardButtonsArray = Array.prototype.slice.call(keyboardButtons);
+
+     for (let i = 0; i < keyboardButtonsArray.length; i += 1) {
+       keyboardButtonsArray[i].disabled = true;
+     }
+
      if (gameWin === true) {
        h1.textContent = 'You won! Play again!';
        this.overlayDiv.className = 'win';
@@ -119,8 +133,6 @@
        h1.textContent = 'You lost. Play again.';
        this.overlayDiv.className = 'lose';
      }
-
-
 
    }
 
@@ -150,6 +162,8 @@
      this.phraseDiv.innerHTML = '<ul></ul>';
      this.missed = 0;
      this.overlayDiv.className = '';
+
+
    }
 
  }
